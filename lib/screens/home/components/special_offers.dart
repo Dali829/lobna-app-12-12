@@ -101,34 +101,7 @@ class _SpecialOffersState extends State<SpecialOffers> {
               return CircularProgressIndicator();
             },
           ),
-        ), /*
-        Container(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                SpecialOfferCard(
-                  image: "assets/images/car-loc.jpg",
-                  category: "Cars",
-                  numOfBrands: 18,
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CarsScreen()),
-                    );
-                  },
-                ),
-                SpecialOfferCard(
-                  image: "assets/images/house-loc.jpg",
-                  category: "Houses",
-                  numOfBrands: 24,
-                  press: () {},
-                ),
-                SizedBox(width: getProportionateScreenWidth(20)),
-              ],
-            ),
-          ),
-        ),*/
+        ),
       ],
     );
   }
@@ -166,14 +139,9 @@ class SpecialOfferCard extends StatelessWidget {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF343434).withOpacity(0.4),
-                        Color(0xFF343434).withOpacity(0.15),
-                      ],
-                    ),
+                    image: DecorationImage(
+                        image: MemoryImage(base64Decode(image)),
+                        fit: BoxFit.cover),
                   ),
                 ),
                 Padding(
