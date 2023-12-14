@@ -108,23 +108,6 @@ class _HomeHeaderState extends State<HomeHeader> {
                           width: 4,
                         ), //Border.all
                         borderRadius: BorderRadius.circular(0),
-                        /*   boxShadow: [
-                          BoxShadow(
-                            color: Colors.black,
-                            offset: const Offset(
-                              2.0,
-                              2.0,
-                            ), //Offset
-                            blurRadius: 10.0,
-                            spreadRadius: 2.0,
-                          ), //BoxShadow
-                          BoxShadow(
-                            color: Colors.white,
-                            offset: const Offset(0.0, 0.0),
-                            blurRadius: 0.0,
-                            spreadRadius: 0.0,
-                          ), //BoxShadow
-                        ],*/
                       ),
                       child: ListView.builder(
                         itemCount: mesData.length,

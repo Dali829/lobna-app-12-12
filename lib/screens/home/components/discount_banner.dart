@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '../../../agentDashboard/agentDashboard.dart';
 import '../../../components/default_button.dart';
 import '../../../main.dart';
 import '../../../models/categoryModel.dart';
+import '../../../models/profilModel.dart';
 import '../../../service/links.dart';
 import '../../../size_config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -41,10 +43,22 @@ class _DiscountBannerState extends State<DiscountBanner> {
   @override
   void initState() {
     super.initState();
+    _Data = getClientById();
     _Datas = getAll();
     fToast = FToast();
     fToast?.init(context);
   }
+
+  final spinkit = SpinKitFadingCircle(
+    itemBuilder: (BuildContext context, int index) {
+      return DecoratedBox(
+        decoration: BoxDecoration(
+          color: index.isEven ? Color(0xFF4A3298) : Colors.green,
+        ),
+      );
+    },
+  );
+  late Future<profilModel> _Data;
 
   Future postElement() async {
     try {
@@ -98,6 +112,18 @@ class _DiscountBannerState extends State<DiscountBanner> {
       });
     } catch (e) {
       showCustomToast('erroriojoij');
+    }
+  }
+
+  Future<profilModel> getClientById() async {
+    String Url = "$getAgentByID${sharedPref?.getString("id")}";
+    http.Response futureprofil = await http.get(Uri.parse(Url));
+    print(futureprofil.statusCode);
+    print(futureprofil.body);
+    if ((futureprofil.statusCode == 200) || (futureprofil.statusCode == 201)) {
+      return profilModel.fromJson(json.decode(futureprofil.body));
+    } else {
+      throw Exception('can not load post data');
     }
   }
 
@@ -251,9 +277,40 @@ class _DiscountBannerState extends State<DiscountBanner> {
     double height = MediaQuery.of(context).size.height;
     return Column(
       children: [
-        CircleAvatar(
-          backgroundImage: AssetImage("assets/images/Logo.png"),
-          radius: 80,
+        FutureBuilder<profilModel>(
+          future: _Data,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 115,
+                    width: 115,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      clipBehavior: Clip.none,
+                      children: [
+                        (snapshot.data!.avatar != null)
+                            ? CircleAvatar(
+                                backgroundImage: MemoryImage(
+                                    base64Decode(snapshot.data?.avatar ?? " ")),
+                                radius: 80,
+                              )
+                            : CircleAvatar(
+                                backgroundImage:
+                                    AssetImage("assets/images/Logo.png"),
+                                radius: 80,
+                              ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Text("Verifer votre connexion");
+            }
+            return spinkit;
+          },
         ),
         SizedBox(height: getProportionateScreenHeight(40)),
         (sharedPref?.getString("role") == "agent")

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -117,6 +118,91 @@ class _BodyState extends State<Body> {
     );
   }
 
+  TextEditingController Input_controller = new TextEditingController();
+
+  Future<void> _showAlertDialog(String champ) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // <-- SEE HERE
+          title: const Text('type ...'),
+          content: SingleChildScrollView(
+            child: Container(
+              width: 200,
+              child: TextFormField(
+                controller: Input_controller,
+                decoration: InputDecoration(
+                  fillColor: Colors.grey.shade100,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                validator: (val) {
+                  if (val?.length == 0) {
+                    return "error";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('modify'),
+              onPressed: () {
+                updateElement(champ);
+
+                Timer(Duration(seconds: 3), () {
+                  Navigator.of(context).pop();
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future updateElement(String champ) async {
+    print(champ);
+    print(Input_controller.text);
+    try {
+      String Url = "$updateAgent";
+      await http
+          .put(Uri.parse(Url),
+              headers: {
+                "Accept": "application/json",
+                "content-type": "application/json"
+              },
+              body: jsonEncode({
+                "id": sharedPref?.getString("id"),
+                champ: Input_controller.text,
+              }))
+          .then((response) {
+        if ((response.statusCode == 200) || response.statusCode == 201) {
+          showCustomToast('user updated');
+          setState(() {
+            _Data = getClientById();
+          });
+        } else {
+          showCustomToast('error');
+        }
+      });
+    } catch (e) {
+      showCustomToast('error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -176,28 +262,28 @@ class _BodyState extends State<Body> {
                         ),
                       ),
                       SizedBox(height: 20),
+                      Text("bonjour"),
                       ProfileMenu(
                         text: snapshot.data!.Name,
                         icon: "assets/icons/User Icon.svg",
-                        press: () => {},
+                        press: () => _showAlertDialog("name"),
                       ),
                       ProfileMenu(
                         text: snapshot.data!.email,
                         icon: "assets/icons/User Icon.svg",
-                        press: () {},
+                        press: () => _showAlertDialog("email"),
                       ),
                       ProfileMenu(
                         text: snapshot.data!.phone.toString(),
                         icon: "assets/icons/Phone.svg",
-                        press: () {},
+                        press: () => _showAlertDialog("phone"),
                       ),
                       ProfileMenu(
                         text: "Se Déconnecter",
                         icon: "assets/icons/Log out.svg",
-                        press: () {
-                          Navigator.of(context).pop(MaterialPageRoute(
-                              builder: (context) => SignInScreen()));
-                        },
+                        press: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => SignInScreen())),
                       ),
                     ],
                   );
