@@ -234,6 +234,16 @@ class _CarsScreenState extends State<CarsScreen> {
                                                   color: Colors.black,
                                                 ), //Textstyle
                                               ),
+                                            ),
+                                            Text(
+                                              snapshot.data![index].unitPrice
+                                                      .toString() +
+                                                  " dt",
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                color: Color(0xFF5E40B8),
+                                                fontWeight: FontWeight.w500,
+                                              ), //Textstyle
                                             ), //Text
                                             const SizedBox(
                                               height: 10,

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../../models/categoryModel.dart';
 import '../../../service/links.dart';
 import '../constants.dart';
+import '../screens/sign_in/sign_in_screen.dart';
 import 'addCategory.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -234,25 +235,43 @@ class _TableCategoryState extends State<TableCategory> {
         child: SingleChildScrollView(
       child: Column(
         children: [
-          FloatingActionButton.extended(
-            label: (addTab) ? Text('Ajouter') : Text('Retour'), // <-- Text
-            backgroundColor: kPrimaryColor,
-            icon: (addTab)
-                ? Icon(
-                    // <-- Icon
-                    Icons.add,
-                    size: 24.0,
-                  )
-                : Icon(
-                    // <-- Icon
-                    Icons.subdirectory_arrow_left_sharp,
-                    size: 24.0,
-                  ),
-            onPressed: () {
-              setState(() {
-                addTab = !addTab;
-              });
-            },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              FloatingActionButton.extended(
+                label: (addTab) ? Text('Ajouter') : Text('Retour'), // <-- Text
+                backgroundColor: kPrimaryColor,
+                icon: (addTab)
+                    ? Icon(
+                        // <-- Icon
+                        Icons.add,
+                        size: 24.0,
+                      )
+                    : Icon(
+                        // <-- Icon
+                        Icons.subdirectory_arrow_left_sharp,
+                        size: 24.0,
+                      ),
+                onPressed: () {
+                  setState(() {
+                    addTab = !addTab;
+                  });
+                },
+              ),
+              FloatingActionButton.extended(
+                label: Text('se déconnecter'), // <-- Text
+                backgroundColor: kPrimaryColor,
+                icon: Icon(
+                  // <-- Icon
+                  Icons.subdirectory_arrow_left_sharp,
+                  size: 24.0,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => SignInScreen()));
+                },
+              ),
+            ],
           ),
           (addTab)
               ? Column(

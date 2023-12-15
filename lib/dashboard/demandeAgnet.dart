@@ -157,33 +157,39 @@ class _TableDemandeState extends State<TableDemande> {
                                       DataCell(Text(data.email.toString())),
                                       DataCell(Text(data.agenceNAme)),
                                       DataCell(Text(data.agenceLieu)),
-                                      DataCell(Row(
-                                        children: [
-                                          ElevatedButton(
-                                            child: Text("Accepter"),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.blue,
-                                              elevation: 0,
-                                            ),
-                                            onPressed: () {
-                                              updateElement(
-                                                  "validee", "agent", data.id);
-                                            },
-                                          ),
-                                          SizedBox(width: 10),
-                                          ElevatedButton(
-                                            child: Text("Annuler"),
-                                            style: ElevatedButton.styleFrom(
-                                              primary: Colors.red,
-                                              elevation: 0,
-                                            ),
-                                            onPressed: () {
-                                              updateElement(
-                                                  "non", "user", data.id);
-                                            },
-                                          ),
-                                        ],
-                                      )),
+                                      DataCell(
+                                        (data.StatutAgent != 'validee')
+                                            ? Row(
+                                                children: [
+                                                  ElevatedButton(
+                                                    child: Text("Accepter"),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.blue,
+                                                      elevation: 0,
+                                                    ),
+                                                    onPressed: () {
+                                                      updateElement("validee",
+                                                          "agent", data.id);
+                                                    },
+                                                  ),
+                                                  SizedBox(width: 10),
+                                                  ElevatedButton(
+                                                    child: Text("Annuler"),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: Colors.red,
+                                                      elevation: 0,
+                                                    ),
+                                                    onPressed: () {
+                                                      updateElement("non",
+                                                          "user", data.id);
+                                                    },
+                                                  ),
+                                                ],
+                                              )
+                                            : Text("validée"),
+                                      )
                                     ]),
                                   )
                                   .toList());
