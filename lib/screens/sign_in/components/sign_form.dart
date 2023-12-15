@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:ecommerce/components/custom_surfix_icon.dart';
 import 'package:ecommerce/components/form_error.dart';
 import 'package:ecommerce/helper/keyboard.dart';
-import 'package:ecommerce/screens/forgot_password/forgot_password_screen.dart';
 import 'package:ecommerce/screens/login_success/login_success_screen.dart';
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
@@ -114,14 +113,6 @@ class _SignFormState extends State<SignForm> {
               ),
               Text("Remember me"),
               Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(
-                    context, ForgotPasswordScreen.routeName),
-                child: Text(
-                  "Mot de passe oublié",
-                  style: TextStyle(decoration: TextDecoration.underline),
-                ),
-              )
             ],
           ),
           FormError(errors: errors),
@@ -132,8 +123,6 @@ class _SignFormState extends State<SignForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
                 postLogin(email: email, password: password);
-                /*KeyboardUtil.hideKeyboard(context);
-                Navigator.pushNamed(context, LoginSuccessScreen.routeName);*/
               }
             },
           ),
